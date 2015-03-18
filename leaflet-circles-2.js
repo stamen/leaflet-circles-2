@@ -35,6 +35,9 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = colorbrewer;
 }
 
+window.STMN = window.STMN || {};
+window.STMN.colorbrewer = colorbrewer;
+
 
 /*
  * https://github.com/CartoDB/Leaflet.CanvasLayer
