@@ -1,0 +1,18 @@
+{
+  "name": "leaflet-circles-2",
+  "main": "build/leaflet-circles-2.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/stamen/leaflet-circles-2",
+  "authors": [
+    "kai@stamen.com"
+  ],
+  "description": "Leaflet circle layer in canvas",
+  "license": "ISC",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
