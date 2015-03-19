@@ -2,8 +2,9 @@
   "use strict";
 
   function CircleLayer() {
-    var out = new (L.CanvasLayer.extend({
-    _data: [],
+    var computedStyle,
+        out = new (L.CanvasLayer.extend({
+        _data: [],
 
     options: {
       color: function(d) { return "#444"; },
@@ -39,7 +40,9 @@
 				return {point: point, d: d};
 			});
 
-      ctx.clearRect(0,0,this.options.width,this.options.height);
+      computedStyle = window.getComputedStyle(this._container.parentNode.parentNode.parentNode);
+
+      ctx.clearRect(0,0,this._map._container.offsetWidth,this._map._container.offsetWidth);
 
       data.forEach(function(d) {
         ctx.fillStyle = that.options.color(d.d);
