@@ -1,6 +1,10 @@
 {
   "name": "leaflet-circles-2",
-  "main": "build/leaflet-circles-2.js",
+  "main": [
+    "./lib/colorbrewer.js",
+    "./lib/leaflet_canvas_layer.js",
+    "./src/leaflet-circles-2.js"
+  ],
   "version": "0.0.0",
   "homepage": "https://github.com/stamen/leaflet-circles-2",
   "authors": [
