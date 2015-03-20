@@ -49,10 +49,25 @@
       });
     },
 
-		_project : function(obj) {
-			var point = this._map.latLngToContainerPoint([obj.lat, obj.long]);
-			return [point.x, point.y];
-		}
+    // Copied from leaflet.js, and modified to remove rounding.
+    // This will generate floating point screen coordinates, instead of integers.
+    latLngToLayerPoint: function (latlng) {
+      //var projectedPoint = this.project(L.latLng(latlng))._round();
+      var projectedPoint = this._map.project(L.latLng(latlng));
+      return projectedPoint._subtract(this._map.getPixelOrigin());
+    },
+
+    // Copied from leaflet.js, but unchanged.
+    latLngToContainerPoint: function (latlng) {
+      return this._map.layerPointToContainerPoint(this.latLngToLayerPoint(L.latLng(latlng)));
+    },
+
+    _project : function(obj) {
+      // Calling locally modified function to return floating point screen coords.
+      var point = this.latLngToContainerPoint([obj.lat, obj.long]);
+      //var point = this._map.latLngToContainerPoint([obj.lat, obj.long]);
+      return [point.x, point.y];
+    }
 }))(arguments[0]);
 
     return out;
