@@ -94,6 +94,8 @@
     });
     */
 
+    context.clearRect(0,0,that._map._container.offsetWidth,that._map._container.offsetHeight);
+
     data.forEach(function(d) {
       context.fillStyle = color(d.value);
       context.beginPath();
