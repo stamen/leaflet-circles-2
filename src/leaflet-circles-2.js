@@ -5,9 +5,8 @@
   // If this is a CommonJS module
   //
   if (typeof module === "object" && module.exports) {
-    var leafletCanvasLayer = require("./node_modules/Leaflet.Canvas/leaflet_canvas_layer.js");
-    var d3                 = require("d3");
-    var colorbrewer        = require("colorbrewer");
+    var d3          = require("d3");
+    var colorbrewer = require("colorbrewer");
   }
 
   function CircleLayer(options) {
