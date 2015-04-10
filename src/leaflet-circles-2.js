@@ -124,11 +124,18 @@
     //var point = this._map.latLngToContainerPoint([obj.lat, obj.long]);
     return [point.x, point.y];
   }
-  
+
 }))(arguments[0]);
 
     return out;
   };
+
+  //
+  // If this is a CommonJS module
+  //
+  if (typeof module === "object" && module.exports) {
+    module.exports = CircleLayer;
+  }
 
   //
   // If none of those, add it to Window
