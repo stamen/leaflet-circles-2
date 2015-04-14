@@ -64,9 +64,6 @@
           that    = this;
 
       var data = this._data
-      .filter(function(d) {
-        return d.properties.pop_1860 > 10;
-      })
       .map(function(d) {
         var point = that._project(d);
         d.x = point[0];
@@ -74,66 +71,38 @@
         return d;
       });
 
-    /*
-    d3.timer(function(t) {
-
-      if (t < 1500) return false;
-      t = (t-1500) % 24000;
-
-      if (t > 22000) return false;
-      if (t > 10000 && t < 12000) return false;
-      if (t > 12000) t = 22000 - t;
-
-      var frame = Math.floor(t/2500);
-
       context.clearRect(0,0,that._map._container.offsetWidth,that._map._container.offsetHeight);
 
-      d3.select("#year").text(1820 + Math.round(ease(t%2500/2500)*10 + Math.floor(t/2500)*10));
-
-      // avoid bug
-      if (frame > 3 || frame < 0) return false;
-
-      transitions[frame](ease((t%2500)/2500)).forEach(function(d,i) {
-        context.fillStyle = color(d);
+      data.forEach(function(d) {
+        context.fillStyle = color(d.value);
         context.beginPath();
-        context.arc(data[i].x, data[i].y, radius(Math.abs(d)), 0, 2*Math.PI);
+        context.arc(d.x, d.y, radius(Math.abs(d.value)), 0, 2*Math.PI);
         context.fill();
       });
-    });
-    */
 
-    context.clearRect(0,0,that._map._container.offsetWidth,that._map._container.offsetHeight);
+    },
 
-    data.forEach(function(d) {
-      context.fillStyle = color(d.value);
-      context.beginPath();
-      context.arc(d.x, d.y, radius(Math.abs(d.value)), 0, 2*Math.PI);
-      context.fill();
-    });
+    // Copied from leaflet.js, and modified to remove rounding.
+    // This will generate floating point screen coordinates, instead of integers.
+    latLngToLayerPoint: function (latlng) {
+      //var projectedPoint = this.project(L.latLng(latlng))._round();
+      var projectedPoint = this._map.project(L.latLng(latlng));
+      return projectedPoint._subtract(this._map.getPixelOrigin());
+    },
 
-  },
+    // Copied from leaflet.js, but unchanged.
+    latLngToContainerPoint: function (latlng) {
+      return this._map.layerPointToContainerPoint(this.latLngToLayerPoint(L.latLng(latlng)));
+    },
 
-  // Copied from leaflet.js, and modified to remove rounding.
-  // This will generate floating point screen coordinates, instead of integers.
-  latLngToLayerPoint: function (latlng) {
-    //var projectedPoint = this.project(L.latLng(latlng))._round();
-    var projectedPoint = this._map.project(L.latLng(latlng));
-    return projectedPoint._subtract(this._map.getPixelOrigin());
-  },
+    _project : function(obj) {
+      // Calling locally modified function to return floating point screen coords.
+      var point = this.latLngToContainerPoint([obj.properties.lat, obj.properties.long]);
+      //var point = this._map.latLngToContainerPoint([obj.lat, obj.long]);
+      return [point.x, point.y];
+    }
 
-  // Copied from leaflet.js, but unchanged.
-  latLngToContainerPoint: function (latlng) {
-    return this._map.layerPointToContainerPoint(this.latLngToLayerPoint(L.latLng(latlng)));
-  },
-
-  _project : function(obj) {
-    // Calling locally modified function to return floating point screen coords.
-    var point = this.latLngToContainerPoint([obj.properties.lat, obj.properties.long]);
-    //var point = this._map.latLngToContainerPoint([obj.lat, obj.long]);
-    return [point.x, point.y];
-  }
-
-}))(arguments[0]);
+  }))(arguments[0]);
 
     return out;
   };
