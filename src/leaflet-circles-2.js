@@ -48,18 +48,23 @@
       render: function(value) {
         var canvas  = this.getCanvas(),
             context = canvas.getContext('2d'),
-            that    = this;
-
+            that    = this,
+            //[t,r,b,l]
+            bounds = [-that._map._container.offsetHeight * 0.5, that._map._container.offsetWidth * 1.5, that._map._container.offsetHeight * 1.5, -that._map._container.offsetWidth * 0.5 ];
         var data = this._data
         .map(function(d) {
           var point = that._project(d);
+          if (point[0] < bounds[3] || point[0] > bounds[1] || point[1] < bounds[0] || point[1] > bounds[2]) {
+            return null;
+          }
           d.x = point[0];
           d.y = point[1];
           return d;
-        });
+        }).filter(function(d) {
+          return (d === null) ? false : true;
+        })
 
         context.clearRect(0, 0, that._map._container.offsetWidth, that._map._container.offsetHeight);
-
         data.forEach(function(d) {
           context.fillStyle = that.options.color(d.value);
           context.beginPath();
